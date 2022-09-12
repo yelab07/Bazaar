@@ -1,20 +1,73 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
+
+import HomeNavigator from "./screens/Home/HomeNavigator";
+import CartNavigator from "./screens/Cart/CartNavigator";
+//import AccountNavigator from "./screens/Account/AccountNavigator";
+import SearchBar from "./components/SearchBar";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Home"
+          component={HomeNavigator}
+          options={{
+            header: () => <SearchBar />,
+            tabBarActiveTintColor: "#814e66",
+            tabBarInactiveTintColor: "#000",
+            tabBarIcon: (tabInfo) => {
+              return (
+                <Ionicons
+                  name="md-home"
+                  size={24}
+                  color={tabInfo.focused ? "#814e66" : "#000"}
+                />
+              );
+            },
+          }}
+        />
+        {/* <Tab.Screen
+          name="Account"
+          component={AccountNavigator}
+          options={{
+            headerShown: false,
+            tabBarIcon: (tabInfo) => {
+              return (
+                <Ionicons
+                  name="person-circle-outline"
+                  size={26}
+                  color={tabInfo.focused ? "#814e66" : "#000"}
+                />
+              );
+            },
+          }}
+        /> */}
+        <Tab.Screen
+          name="Cart"
+          component={CartNavigator}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: "#814e66",
+            tabBarInactiveTintColor: "#000",
+            tabBarIcon: (tabInfo) => {
+              return (
+                <Ionicons
+                  name="cart"
+                  size={26}
+                  color={tabInfo.focused ? "#814e66" : "#000"}
+                />
+              );
+            },
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
