@@ -23,8 +23,11 @@ const HomeScreen = () => {
               justifyContent: "space-between",
             }}
           >
-            <View style={styles.view1}></View>
-            <View style={styles.view1}></View>
+            <TouchableOpacity style={styles.view1}
+              onPress={() => navigation.navigate("ProductDetailsScreen" as never)}></TouchableOpacity>
+            <TouchableOpacity style={styles.view1}
+              onPress={() => navigation.navigate("ProductDetailsScreen" as never)}
+            ></TouchableOpacity>
           </View>
           <View
             style={{
@@ -34,37 +37,37 @@ const HomeScreen = () => {
               marginTop: 40,
             }}
           >
-            <View style={styles.view1}></View>
-            <View style={styles.view1}></View>
+            <TouchableOpacity style={styles.view1}></TouchableOpacity>
+            <TouchableOpacity style={styles.view1}></TouchableOpacity>
           </View>
         </View>
       </View>
       <Text style={styles.title}>Categories</Text>
       <ScrollView contentContainerStyle={styles.secondViewContainer}>
-        <View style={styles.view2}>
+        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
           <View style={styles.imageBox}></View>
           <View style={styles.categoryBox}>
             <Text>Women Section</Text>
           </View>
-        </View>
-        <View style={styles.view2}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
           <View style={styles.imageBox}></View>
           <View style={styles.categoryBox}>
             <Text>Men Section</Text>
           </View>
-        </View>
-        <View style={styles.view2}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
           <View style={styles.imageBox}></View>
           <View style={styles.categoryBox}>
             <Text>Jewelery Section</Text>
           </View>
-        </View>
-        <View style={styles.view2}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
           <View style={styles.imageBox}></View>
           <View style={styles.categoryBox}>
             <Text>Electronics Section</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
