@@ -1,15 +1,18 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import StatusBarSpace from "./StatusBarSpace";
-import { useNavigation, CommonActions } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 
 export default function SearchBar() {
   const navigation = useNavigation();
+  const [text, setText] = useState("");
 
   return (
     <View style={{ backgroundColor: "#dcb688" }}>
       <StatusBarSpace />
       <TextInput
+        value={text}
+        onChangeText={setText}
         placeholder="Search"
         style={{
           margin: 7,
@@ -22,8 +25,9 @@ export default function SearchBar() {
         onSubmitEditing={() => {
           navigation.navigate(
             "Home" as never,
-            { screen: "ProductsScreen" } as never
+            { screen: "ProductsScreen", params: { search: text } } as never
           );
+          setText("");
         }}
       />
     </View>
