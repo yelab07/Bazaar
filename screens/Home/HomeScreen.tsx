@@ -13,6 +13,9 @@ import { useNavigation } from "@react-navigation/core";
 import { useProductsQuery } from "../../services/productsApi";
 
 
+
+
+
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
@@ -69,7 +72,7 @@ const HomeScreen = () => {
           <Text style={styles.title}>Categories</Text>
           <ScrollView contentContainerStyle={styles.secondViewContainer}>
             <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
+            onPress={() => navigation.navigate("ProductsScreen")}
             >
               <View style={styles.imageBox}></View>
               <View style={styles.categoryBox}>
@@ -77,7 +80,7 @@ const HomeScreen = () => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
+            onPress={() => navigation.navigate("ProductsScreen")}
             >
               <View style={styles.imageBox}></View>
               <View style={styles.categoryBox}>
@@ -85,7 +88,7 @@ const HomeScreen = () => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
+            onPress={() => navigation.navigate("ProductsScreen")}
             >
               <View style={styles.imageBox}></View>
               <View style={styles.categoryBox}>
@@ -93,7 +96,7 @@ const HomeScreen = () => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
+            onPress={() => navigation.navigate("ProductsScreen")}
             >
               <View style={styles.imageBox}></View>
               <View style={styles.categoryBox}>
