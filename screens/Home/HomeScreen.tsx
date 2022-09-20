@@ -7,7 +7,7 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
-import { Product } from "../../models/products.model";
+// import { Product } from "../../models/products.model";
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
 import { useProductsQuery } from "../../services/productsApi";
