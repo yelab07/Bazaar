@@ -48,6 +48,7 @@ const CheckoutScreen = () => {
             <TextInput
               placeholder="Zip Code"
               keyboardType="numeric"
+              maxLength={5}
               style={[styles.longInput, { width: 150, marginHorizontal: 10 }]}
             />
           </View>
@@ -82,6 +83,7 @@ const CheckoutScreen = () => {
                 <TextInput
                   placeholder="Zip Code"
                   keyboardType="numeric"
+                  maxLength={5}
                   style={[
                     styles.longInput,
                     { width: 150, marginHorizontal: 10 },
