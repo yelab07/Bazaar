@@ -4,72 +4,112 @@ import {
   Text,
   View,
   ScrollView,
+  Image,
+  ImageBackground,
 } from "react-native";
+import { Product } from "../../models/products.model";
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
+import { useProductsQuery } from "../../services/productsApi";
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
 
-  return (
-    <View style={{ flex: 1, backgroundColor: "#dcb688" }}>
+  return (<View style={{ flex: 1, backgroundColor: "#dcb688" }}>
+    {isLoading && <h2>...Loading </h2>}
+    {isFetching && <h2>...Fetching </h2>}
+    {error && <h2>...Somthing went wrong </h2>}
+    {isSuccess && (<View>
       <Text style={styles.title}>Our Products</Text>
-      <View style={{ alignItems: "center" }}>
-        <View style={styles.firstContainer}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <TouchableOpacity style={styles.view1}
-              onPress={() => navigation.navigate("ProductDetailsScreen" as never)}></TouchableOpacity>
-            <TouchableOpacity style={styles.view1}
-              onPress={() => navigation.navigate("ProductDetailsScreen" as never)}
-            ></TouchableOpacity>
+
+      {data.map(product => {
+        return <View key={product.id}>
+          <View style={{ alignItems: "center" }}>
+            < View style={styles.firstContainer}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TouchableOpacity style={styles.view1}
+                  onPress={() => navigation.navigate("ProductDetailsScreen" as never, { id: product.id } as never)}
+                >
+                  <Image resizeMode="cover"
+                    style={{
+                      width: '100%',
+                      height: undefined,
+                      aspectRatio: 1,
+                    }}
+                    source={{ uri: `${product.image}` }}
+                  /></TouchableOpacity>
+                <TouchableOpacity style={styles.view1}
+                // onPress={() => navigation.navigate("ProductDetailsScreen")}
+                ><Image style={{ width: 50, height: 50 }}
+                  source={{ uri: `${product.image}` }}
+                  /></TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 40,
+                }}
+              >
+                <TouchableOpacity style={styles.view1}></TouchableOpacity>
+                <TouchableOpacity style={styles.view1}></TouchableOpacity>
+              </View>
+            </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 40,
-            }}
-          >
-            <TouchableOpacity style={styles.view1}></TouchableOpacity>
-            <TouchableOpacity style={styles.view1}></TouchableOpacity>
-          </View>
+          <Text style={styles.title}>Categories</Text>
+          <ScrollView contentContainerStyle={styles.secondViewContainer}>
+            <TouchableOpacity style={styles.view2}
+            // onPress={() => navigation.navigate("ProductsScreen")}
+            >
+              <View style={styles.imageBox}></View>
+              <View style={styles.categoryBox}>
+                <Text>Women Section</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.view2}
+            // onPress={() => navigation.navigate("ProductsScreen")}
+            >
+              <View style={styles.imageBox}></View>
+              <View style={styles.categoryBox}>
+                <Text>Men Section</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.view2}
+            // onPress={() => navigation.navigate("ProductsScreen")}
+            >
+              <View style={styles.imageBox}></View>
+              <View style={styles.categoryBox}>
+                <Text>Jewelery Section</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.view2}
+            // onPress={() => navigation.navigate("ProductsScreen")}
+            >
+              <View style={styles.imageBox}></View>
+              <View style={styles.categoryBox}>
+                <Text>Electronics Section</Text>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-      </View>
-      <Text style={styles.title}>Categories</Text>
-      <ScrollView contentContainerStyle={styles.secondViewContainer}>
-        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
-          <View style={styles.imageBox}></View>
-          <View style={styles.categoryBox}>
-            <Text>Women Section</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
-          <View style={styles.imageBox}></View>
-          <View style={styles.categoryBox}>
-            <Text>Men Section</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
-          <View style={styles.imageBox}></View>
-          <View style={styles.categoryBox}>
-            <Text>Jewelery Section</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.view2} onPress={() => navigation.navigate("ProductsScreen" as never)}>
-          <View style={styles.imageBox}></View>
-          <View style={styles.categoryBox}>
-            <Text>Electronics Section</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+
+      })}
+    </View>)}
+
+
+
+
+  </View>
   );
 };
 

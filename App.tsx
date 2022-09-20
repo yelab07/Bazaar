@@ -8,32 +8,40 @@ import HomeNavigator from "./screens/Home/HomeNavigator";
 import CartNavigator from "./screens/Cart/CartNavigator";
 //import AccountNavigator from "./screens/Account/AccountNavigator";
 import SearchBar from "./components/SearchBar";
+import { Provider } from "react-redux";
+import { store } from "./store"
+// import { useProductsQuery } from "./services/productsApi";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
+  // const {data,error,isLoading,isFetching,isSuccess}=useProductsQuery
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeNavigator}
-          options={{
-            header: () => <SearchBar />,
-            tabBarActiveTintColor: "#814e66",
-            tabBarInactiveTintColor: "#000",
-            tabBarIcon: (tabInfo) => {
-              return (
-                <Ionicons
-                  name="md-home"
-                  size={24}
-                  color={tabInfo.focused ? "#814e66" : "#000"}
-                />
-              );
-            },
-          }}
-        />
-        {/* <Tab.Screen
+    <Provider store={store}>
+      {/* {isLoading && <h2>...Loading </h2>} */}
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={HomeNavigator}
+            options={{
+              header: () => <SearchBar />,
+              tabBarActiveTintColor: "#814e66",
+              tabBarInactiveTintColor: "#000",
+              tabBarIcon: (tabInfo) => {
+                return (
+                  <Ionicons
+                    name="md-home"
+                    size={24}
+                    color={tabInfo.focused ? "#814e66" : "#000"}
+                  />
+                );
+              },
+            }}
+          />
+          {/* <Tab.Screen
           name="Account"
           component={AccountNavigator}
           options={{
@@ -49,25 +57,28 @@ export default function App() {
             },
           }}
         /> */}
-        <Tab.Screen
-          name="Cart"
-          component={CartNavigator}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: "#814e66",
-            tabBarInactiveTintColor: "#000",
-            tabBarIcon: (tabInfo) => {
-              return (
-                <Ionicons
-                  name="cart"
-                  size={26}
-                  color={tabInfo.focused ? "#814e66" : "#000"}
-                />
-              );
-            },
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+          <Tab.Screen
+            name="Cart"
+            component={CartNavigator}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: "#814e66",
+              tabBarInactiveTintColor: "#000",
+              tabBarIcon: (tabInfo) => {
+                return (
+                  <Ionicons
+                    name="cart"
+                    size={26}
+                    color={tabInfo.focused ? "#814e66" : "#000"}
+                  />
+                );
+              },
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
+
 }
