@@ -18,9 +18,9 @@ const HomeScreen = () => {
   const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
 
   return (<View style={{ flex: 1, backgroundColor: "#dcb688" }}>
-    {isLoading && <h2>...Loading </h2>}
-    {isFetching && <h2>...Fetching </h2>}
-    {error && <h2>...Somthing went wrong </h2>}
+    {isLoading && <Text>...Loading </Text>}
+    {isFetching && <Text>...Fetching </Text>}
+    {error && <Text>...Somthing went wrong </Text>}
     {isSuccess && (<View>
       <Text style={styles.title}>Our Products</Text>
 
