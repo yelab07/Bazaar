@@ -5,7 +5,6 @@ import {
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from "@react-navigation/core";
-import { Product } from "../../models/products.model";
 
 interface CategoryProps {
     category: string,
@@ -15,15 +14,6 @@ interface CategoryProps {
 
 const Category = ({ category, image, index }: CategoryProps) => {
     const navigation = useNavigation();
-    // const [filteredData, setFilteredData] = useState<Product[]>([])
-
-    //   const filteredProducts = (cat: string) => {
-    //     const sortedList = data?.filter((x) => x.category === cat)
-    //     console.log(sortedList)
-    //     // setFilteredData(sortedList as any)
-
-    //   }
-    //   filteredProducts("women's clothing")
 
     const str = category;
     const caps = str.charAt(0).toUpperCase() + str.slice(1);
@@ -59,38 +49,12 @@ const Category = ({ category, image, index }: CategoryProps) => {
 export default Category
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 25,
-        padding: 15,
-    },
-    firstContainer: {
-        flex: 1,
-        flexDirection: "row",
-        alignContent: "space-around",
-        justifyContent: "space-around",
-        flexWrap: "wrap",
-        width: 300,
-        height: 400,
 
-    },
-    view1: {
-
-
-        backgroundColor: "black",
-        width: 125,
-        height: 135,
-        borderRadius: 15,
-        elevation: 10,
-        shadowColor: "#000",
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-    },
     secondViewContainer: {
         alignItems: "center",
     },
     view2: {
-        width: 350,
+        width: 300,
         height: 100,
         backgroundColor: "white",
         marginBottom: 20,
