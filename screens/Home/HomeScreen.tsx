@@ -1,117 +1,88 @@
 import {
   TouchableOpacity,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
   ScrollView,
   Image,
-  ImageBackground,
+
 } from "react-native";
-// import { Product } from "../../models/products.model";
-import React from "react";
+import Category from "./Category";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { useProductsQuery } from "../../services/productsApi";
+import { Product } from "../../models/products.model";
 
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
   const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
 
-  return (<View style={{ flex: 1, backgroundColor: "#dcb688" }}>
+  const navigation = useNavigation();
+
+  const data2 = data?.slice(3, -5)
+  const data3 = data2?.splice(2, 8)
+
+  console.log(data)
+  const renderCategories = (data: Product[]) => {
+    const categories = data.map((product, index) => {
+      return (
+        <Category
+          key={index}
+          index={index}
+          image={product.image}
+          category={product.category}
+        />
+      )
+    });
+    return categories;
+  }
+
+  return (<SafeAreaView style={{ flex: 1, backgroundColor: "#dcb688" }}>
+
     {isLoading && <Text>...Loading </Text>}
     {isFetching && <Text>...Fetching </Text>}
-    {error && <Text>...Somthing went wrong </Text>}
-    {isSuccess && (<View>
+    {error && <Text>...Something went wrong </Text>}
+    {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
       <Text style={styles.title}>Our Products</Text>
 
-      {data.map(product => {
-        return <View key={product.id}>
-          <View style={{ alignItems: "center" }}>
-            < View style={styles.firstContainer}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity style={styles.view1}
-                  onPress={() => navigation.navigate("ProductDetailsScreen" as never, { id: product.id } as never)}
+      <View >
+        <View style={{ alignItems: "center" }}>
+          < View style={styles.firstContainer}>
+            {data2?.map((product, index) => {
+              return (
+                <View key={index}
                 >
-                  <Image resizeMode="cover"
-                    style={{
-                      width: '100%',
-                      height: undefined,
-                      aspectRatio: 1,
-                    }}
-                    source={{ uri: `${product.image}` }}
-                  /></TouchableOpacity>
-                <TouchableOpacity style={styles.view1}
-                // onPress={() => navigation.navigate("ProductDetailsScreen")}
-                ><Image style={{ width: 50, height: 50 }}
-                  source={{ uri: `${product.image}` }}
-                  /></TouchableOpacity>
-              </View>
+                  <TouchableOpacity style={styles.view1}
+                    onPress={() => navigation.navigate("ProductDetailsScreen" as never, { id: product.id } as never)}
+                  >
+                    <Image
+                      resizeMode="cover"
+                      style={{
+                        width: 125,
+                        height: 135,
+                        borderRadius: 15,
 
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 40,
-                }}
-              >
-                <TouchableOpacity style={styles.view1}></TouchableOpacity>
-                <TouchableOpacity style={styles.view1}></TouchableOpacity>
-              </View>
-            </View>
+                        aspectRatio: 1,
+                      }}
+                      source={{ uri: `${product.image}` }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )
+            })}
           </View>
-          <Text style={styles.title}>Categories</Text>
-          <ScrollView contentContainerStyle={styles.secondViewContainer}>
-            <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
-            >
-              <View style={styles.imageBox}></View>
-              <View style={styles.categoryBox}>
-                <Text>Women Section</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
-            >
-              <View style={styles.imageBox}></View>
-              <View style={styles.categoryBox}>
-                <Text>Men Section</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
-            >
-              <View style={styles.imageBox}></View>
-              <View style={styles.categoryBox}>
-                <Text>Jewelery Section</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.view2}
-            // onPress={() => navigation.navigate("ProductsScreen")}
-            >
-              <View style={styles.imageBox}></View>
-              <View style={styles.categoryBox}>
-                <Text>Electronics Section</Text>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
         </View>
+        <Text style={styles.title}>Categories</Text>
 
-      })}
-    </View>)}
+      </View>
+      {data2 && renderCategories(data2)}
 
-
-
-
-  </View>
+    </ScrollView>)}
+  </SafeAreaView>
   );
 };
+
 
 export default HomeScreen;
 
@@ -121,12 +92,19 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   firstContainer: {
-    flexDirection: "column",
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "space-around",
+    justifyContent: "space-around",
+    flexWrap: "wrap",
     width: 300,
-    height: 300,
+    height: 400,
+
   },
   view1: {
-    backgroundColor: "white",
+
+
+    backgroundColor: "black",
     width: 125,
     height: 135,
     borderRadius: 15,
@@ -136,33 +114,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  secondViewContainer: {
-    alignItems: "center",
-  },
-  view2: {
-    width: 350,
-    height: 100,
-    backgroundColor: "white",
-    marginBottom: 20,
-    borderRadius: 15,
-    flexDirection: "row",
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-  imageBox: {
-    width: 120,
-    height: 100,
-    backgroundColor: "gray",
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  categoryBox: {
-    paddingLeft: 10,
-    width: 175,
-    height: 100,
-    justifyContent: "center",
-  },
+
+
 });
