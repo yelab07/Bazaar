@@ -1,9 +1,0 @@
- // const [filteredData, setFilteredData] = useState<Product[]>([])
-
-    //   const filteredProducts = (cat: string) => {
-    //     const sortedList = data?.filter((x) => x.category === cat)
-    //     console.log(sortedList)
-    //     // setFilteredData(sortedList as any)
-
-    //   }
-    //   filteredProducts("women's clothing")
