@@ -19,8 +19,8 @@ const ProductDetailsScreen = () => {
     <View style={{ flex: 1, backgroundColor: "#dcb688" }}>
 
 
+      <Text>ProductDetailsScreen</Text>
       <Text>{data?.title}</Text>
-      <Text>{data?.category}</Text>
 
       <Button
         title="To Home"
