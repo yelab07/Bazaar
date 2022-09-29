@@ -16,14 +16,14 @@ import { Product } from "../../models/products.model";
 
 
 const HomeScreen = () => {
-  const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
+  const { data: products, error, isLoading, isFetching, isSuccess } = useProductsQuery()
 
   const navigation = useNavigation();
 
-  const data2 = data?.slice(3, -5)
-  const data3 = data2?.splice(2, 8)
+  const sampleFourProducts = products?.slice(3, -5)
+  const productsNotOnscreen = sampleFourProducts?.splice(2, 8)
 
-  console.log(data)
+
   const renderCategories = (data: Product[]) => {
     const categories = data.map((product, index) => {
       return (
@@ -45,15 +45,14 @@ const HomeScreen = () => {
     {error && <Text>...Something went wrong </Text>}
     {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
       <Text style={styles.title}>Our Products</Text>
-
-      <View >
+      {products && <View >
         <View style={{ alignItems: "center" }}>
           < View style={styles.firstContainer}>
-            {data2?.map((product, index) => {
+            {sampleFourProducts?.map((product, index) => {
               return (
                 <View key={index}
                 >
-                  <TouchableOpacity style={styles.view1}
+                  <TouchableOpacity style={styles.sampleProductsView}
                     onPress={() => navigation.navigate("ProductDetailsScreen" as never, { id: product.id } as never)}
                   >
                     <Image
@@ -75,8 +74,9 @@ const HomeScreen = () => {
         </View>
         <Text style={styles.title}>Categories</Text>
 
-      </View>
-      {data2 && renderCategories(data2)}
+      </View>}
+
+      {sampleFourProducts && renderCategories(sampleFourProducts)}
 
     </ScrollView>)}
   </SafeAreaView>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     height: 400,
 
   },
-  view1: {
+  sampleProductsView: {
 
 
     backgroundColor: "black",
