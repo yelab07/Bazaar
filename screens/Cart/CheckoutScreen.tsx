@@ -6,19 +6,51 @@ import {
   View,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StatusBarSpace from "../../components/StatusBarSpace";
 import { Feather } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
+import { useSelector } from "react-redux";
 
 import { useNavigation } from "@react-navigation/core";
+import getTaxFromZip from "../../utils/getTaxFromZip";
+
+import colors from "../../data/colors";
 
 const CheckoutScreen = () => {
   const [isChecked, setChecked] = useState(true);
+  const [ZipCode, setZipCode] = useState("");
+  const [BillZipCode, setBillZipCode] = useState("");
+  const [totalTax, setTotalTax] = useState(0);
   const navigation = useNavigation();
 
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+
+  const getTotal = () => {
+    let totalPrice = 0;
+    cart.forEach((item: { price: number; quantity: number }) => {
+      totalPrice += item.price * item.quantity;
+    });
+    return totalPrice;
+  };
+
+  useEffect(() => {
+    if (ZipCode.length >= 4 && isChecked) {
+      setTotalTax(getTotal() * getTaxFromZip(parseInt(ZipCode)));
+      return;
+    }
+
+    if (BillZipCode.length >= 4 && !isChecked) {
+      setTotalTax(getTotal() * getTaxFromZip(parseInt(BillZipCode)));
+      return;
+    }
+
+    setTotalTax(0);
+    return;
+  }, [isChecked]);
+
   return (
-    <View style={{ flex: 1, backgroundColor: "#dcb688" }}>
+    <View style={{ flex: 1, backgroundColor: colors.tan }}>
       <StatusBarSpace />
       <View style={styles.titleBox}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -26,7 +58,7 @@ const CheckoutScreen = () => {
             style={{ marginLeft: 10 }}
             name="arrow-left"
             size={24}
-            color="#814e66"
+            color={colors.violet}
           />
         </TouchableOpacity>
         <Text style={styles.title}>Checkout</Text>
@@ -49,6 +81,13 @@ const CheckoutScreen = () => {
               placeholder="Zip Code"
               keyboardType="numeric"
               maxLength={5}
+              value={ZipCode}
+              onChangeText={setZipCode}
+              onEndEditing={() => {
+                if (ZipCode.length >= 4 && isChecked) {
+                  setTotalTax(getTotal() * getTaxFromZip(parseInt(ZipCode)));
+                }
+              }}
               style={[styles.longInput, { width: 150, marginHorizontal: 10 }]}
             />
           </View>
@@ -61,7 +100,7 @@ const CheckoutScreen = () => {
           <Checkbox
             value={isChecked}
             onValueChange={setChecked}
-            color={isChecked ? "#814e66" : "black"}
+            color={isChecked ? colors.violet : colors.black}
           />
         </View>
 
@@ -84,6 +123,15 @@ const CheckoutScreen = () => {
                   placeholder="Zip Code"
                   keyboardType="numeric"
                   maxLength={5}
+                  value={BillZipCode}
+                  onChangeText={setBillZipCode}
+                  onEndEditing={() => {
+                    if (BillZipCode.length >= 4) {
+                      setTotalTax(
+                        getTotal() * getTaxFromZip(parseInt(BillZipCode))
+                      );
+                    }
+                  }}
                   style={[
                     styles.longInput,
                     { width: 150, marginHorizontal: 10 },
@@ -136,7 +184,7 @@ const CheckoutScreen = () => {
           <View
             style={{
               borderRadius: 10,
-              backgroundColor: "white",
+              backgroundColor: colors.white,
               width: 350,
               height: 300,
               elevation: 10,
@@ -167,17 +215,19 @@ const CheckoutScreen = () => {
                 flex: 1,
               }}
             >
-              <Text style={styles.orderTitle}>$60</Text>
-              <Text style={styles.orderTitle}>$5</Text>
-              <Text style={styles.orderTitle}>$7</Text>
-              <Text style={styles.orderTitle}>$72</Text>
+              <Text style={styles.orderTitle}>${getTotal()}</Text>
+              <Text style={styles.orderTitle}>$5.99</Text>
+              <Text style={styles.orderTitle}>${totalTax.toFixed(2)}</Text>
+              <Text style={styles.orderTitle}>
+                ${getTotal() + totalTax + 5.99}
+              </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.placeOrderBox}>
           <TouchableOpacity style={styles.placeOrderButton}>
-            <Text style={{ color: "white" }}>Place Order</Text>
+            <Text style={{ color: colors.white }}>Place Order</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -206,7 +256,7 @@ const styles = StyleSheet.create({
   },
   placeOrderBox: { flexDirection: "row", justifyContent: "center" },
   placeOrderButton: {
-    backgroundColor: "#814e66",
+    backgroundColor: colors.violet,
     flexDirection: "row",
     justifyContent: "center",
     width: 200,
@@ -216,7 +266,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   longInput: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     paddingHorizontal: 10,
     width: 375,
     marginVertical: 5,
