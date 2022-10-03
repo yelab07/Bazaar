@@ -20,13 +20,13 @@ const Category = ({ category, image, index }: CategoryProps) => {
     return (<View >
         <ScrollView contentContainerStyle={styles.secondViewContainer}>
 
-            <TouchableOpacity style={styles.view2} key={index}
+            <TouchableOpacity style={styles.categoriesView} key={index}
                 onPress={() => navigation.navigate("ProductsScreen" as never)}
             >
                 <View style={styles.imageBox}>
                     <Image resizeMode="cover"
                         style={{
-                            width: 145,
+                            width: 120,
                             height: 100,
                             borderRadius: 15,
 
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     secondViewContainer: {
         alignItems: "center",
     },
-    view2: {
+    categoriesView: {
         width: 300,
         height: 100,
         backgroundColor: "white",
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 10,
     },
     categoryBox: {
-        paddingLeft: 30,
+        paddingLeft: 10,
         width: 175,
         height: 100,
         justifyContent: "center",
