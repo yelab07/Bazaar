@@ -1,4 +1,4 @@
-const taxRates = {
+const StateTaxRates = {
   AK: 0.0,
   AL: 0.04,
   AR: 0.065,
@@ -52,4 +52,4 @@ const taxRates = {
   WY: 0.04,
 };
 
-export default taxRates;
+export default StateTaxRates;

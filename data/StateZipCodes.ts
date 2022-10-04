@@ -1,4 +1,5 @@
-const states = {
+// zip codes (min, max) that aid in determining state tax
+const StateZipCodes = {
   AK: [99501, 99950],
   AL: [35004, 36925],
   AR: [
@@ -101,4 +102,4 @@ const states = {
   WY: [82001, 83128],
 };
 
-export default states;
+export default StateZipCodes;
