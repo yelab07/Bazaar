@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import StatusBarSpace from "../../components/StatusBarSpace";
 import { MaterialIcons } from '@expo/vector-icons';
+import { configureStore } from '@reduxjs/toolkit';
+
 
 const ProdcutsInCart = (props) => {
 return(

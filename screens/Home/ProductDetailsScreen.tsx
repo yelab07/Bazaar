@@ -41,8 +41,6 @@ const ProductDetailsScreen = () => {
             }}
           >
 
-
-
             <View style={styles.view1}
             >
               <Image resizeMode="cover"
