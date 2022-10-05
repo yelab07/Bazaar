@@ -5,11 +5,56 @@ import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp } from "@react-navigation/native";
 import { useProductsQuery } from "../../services/productsApi";
 
+import { Product } from '../../models/products.model';
+
 type ParamList = { Params: { search: string } };
+
+const RenderProducts = (products: Product[]) => {
+
+  const navigation = useNavigation();
+  return (
+    products?.map((product, index) => {
+      return (
+        <View key={index}
+        >
+          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never)}>
+            <View style={styles.productsImageBox}>
+              <Image
+                resizeMode="cover"
+                style={{
+                  width: 125,
+                  height: 100,
+                  borderRadius: 15,
+
+                  aspectRatio: 1,
+                }}
+                source={{ uri: `${product.image}` }}
+              />
+            </View>
+            <View style={styles.productsBox}>
+
+              <Text>{product.title}</Text>
+              <Text>{product.rating.rate}</Text>
+              <Text>${product.price}</Text>
+
+            </View>
+          </TouchableOpacity>
+
+        </View>
+      );
+    }))
+};
+
+
+
+
+
+
+
 const ProductsScreen = () => {
   const { data: products, error, isLoading, isFetching, isSuccess } = useProductsQuery()
-  console.log(products);
-  const navigation = useNavigation();
+
+
   const route = useRoute<RouteProp<ParamList, "Params">>();
 
   return (
@@ -19,45 +64,8 @@ const ProductsScreen = () => {
       {error && <Text>...Something went wrong </Text>}
       {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
         <Text style={styles.title}>Our Products</Text>
-        {products && <View >
-          <View style={{ alignItems: "center" }}>
-            <View style={styles.firstContainer}>
-              {products?.map((product, index) => {
-                return (
-                  <View key={index}
-                  >
-                    <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never)}>
-                      <View style={styles.productsImageBox}>
-                        <Image
-                          resizeMode="cover"
-                          style={{
-                            width: 125,
-                            height: 100,
-                            borderRadius: 15,
 
-                            aspectRatio: 1,
-                          }}
-                          source={{ uri: `${product.image}` }}
-                        />
-                      </View>
-                      <View style={styles.productsBox}>
-
-                        <Text>{product.title}</Text>
-                        <Text>{product.rating.rate}</Text>
-                        <Text>${product.price}</Text>
-
-                      </View>
-                    </TouchableOpacity>
-
-                  </View>
-
-                )
-              })}
-
-            </View>
-          </View>
-
-        </View>}
+        {RenderProducts(products)}
 
       </ScrollView>)}
     </SafeAreaView>
