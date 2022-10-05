@@ -13,8 +13,4 @@ export const productsApi = createApi({
     })
 })
 
-<<<<<<< HEAD
 export const { useProductsQuery, useProductQuery } = productsApi
-=======
-export const { useProductsCategoryQuery, useProductSampleQuery, useProductsQuery, useProductQuery } = productsApi
->>>>>>> development
