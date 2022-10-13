@@ -63,7 +63,7 @@ const ProductsScreen = () => {
       {isLoading && <Text>...Loading </Text>}
       {error && <Text>...Something went wrong </Text>}
       {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
-        <Text style={styles.title}>Our Products</Text>
+        
 
         {RenderProducts(products, route.params.search)}
 
