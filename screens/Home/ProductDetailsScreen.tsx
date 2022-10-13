@@ -3,16 +3,19 @@ import {
   Text,
   View,
   ScrollView,
-  Button,
+  Alert,
   Image,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/core";
 import { useProductQuery } from "../../services/productsApi";
 import { RouteProp } from "@react-navigation/native";
 import QuantitySelector from "../../components/QuantitySelector";
 import { scale } from "react-native-size-matters";
+
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
 
 type ParamList = { Params: { id: string } };
 type Props = {
@@ -20,13 +23,11 @@ type Props = {
 };
 
 const ProductDetailsScreen = ({ onPress }: Props) => {
-  const navigation = useNavigation();
   const route = useRoute<RouteProp<ParamList, "Params">>();
   const { id } = route.params;
   const { data } = useProductQuery(id);
   const [quantity, setQuantity] = useState<any>(1);
-
-  const onAddToCart = () => { };
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -45,12 +46,12 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
               }}
             >
               <Text style={styles.category}>{data?.category}</Text>
-              <Text style={styles.rating}> Rating:{data?.rating.rate}</Text>
+              <Text style={styles.rating}> Rating: {data?.rating.rate}</Text>
             </View>
           </View>
-          <View>
+          <View style={styles.imageContainer}>
             <Image
-              resizeMode="cover"
+              resizeMode="contain"
               style={styles.productImg}
               source={{ uri: `${data?.image}` }}
             />
@@ -82,7 +83,18 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
           <Text style={styles.description}>{data?.description}</Text>
         </View>
         <View style={styles.addToCartWrapper}>
-          <TouchableOpacity style={styles.addButton} onPress={onAddToCart}>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => {
+              dispatch(
+                addToCart({
+                  ...data,
+                  quantity: quantity,
+                })
+              );
+              Alert.alert("Item Added!");
+            }}
+          >
             <Text style={styles.addButtonText}>Add To Cart</Text>
           </TouchableOpacity>
         </View>
@@ -97,12 +109,20 @@ export default ProductDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: 20,
     backgroundColor: "#dcb688",
   },
+  imageContainer: {
+    backgroundColor: "white",
+    width: 150,
+    height: 150,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
   productImg: {
-    width: 200,
-    height: 200,
+    width: 120,
+    height: 120,
     borderRadius: 10,
   },
   title: {
@@ -119,7 +139,7 @@ const styles = StyleSheet.create({
     marginVertical: scale(5),
   },
   price: { fontSize: 20 },
-  addToCartWrapper: {},
+  addToCartWrapper: { paddingBottom: 20 },
   description: {
     marginVertical: scale(20),
     lineHeight: scale(20),

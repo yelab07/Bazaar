@@ -25,7 +25,10 @@ export default function SearchBar() {
         onSubmitEditing={() => {
           navigation.navigate(
             "Home" as never,
-            { screen: "ProductsScreen", params: { search: text } } as never
+            {
+              screen: "ProductsScreen",
+              params: { query: "search", search: text },
+            } as never
           );
           setText("");
         }}

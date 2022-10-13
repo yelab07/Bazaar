@@ -1,56 +1,110 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import StatusBarSpace from "../../components/StatusBarSpace";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import {
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+} from "../../redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
 
-const ProdcutsInCart = (props) => {
-return(
-  <View style={styles.itemsContainer}>
+const CartScreen = () => {
+  const cart = useSelector((state: any) => state.cart.cart);
+  const dispatch = useDispatch();
 
-        <View style={styles.imageBox}>
+  const navigation = useNavigation();
+
+  const getTotalQuantity = () => {
+    let total = 0;
+    cart.forEach((item: any) => {
+      total += item.price * item.quantity;
+    });
+    return total;
+  };
+
+  const ProductsInCart = (props: any) => {
+    return (
+      <View style={styles.itemsContainer}>
+        <View style={styles.imageBox}></View>
+
+        <View style={styles.product}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.productName}
+          >
+            {props.item.title}
+          </Text>
+          <Text style={styles.productPrice}>${props.item.price}</Text>
         </View>
 
-          <View style={styles.product}>
-            <Text style={styles.productName}>Polo Shirt</Text>
-            <Text style={styles.productPrice}>$20</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => dispatch(decrementQuantity(props.item.id))}
+          style={styles.removeItem}
+        >
+          <Text>-</Text>
+        </TouchableOpacity>
 
-          <Text style={styles.removeItem}>-</Text>
-
-          <View style={styles.quantity}>
+        <View style={styles.quantity}>
           <Text>Qty</Text>
-          <Text style={{textAlign: "center"}}>1</Text>
-          </View>
-         
+          <Text style={{ textAlign: "center" }}>{props.item.quantity}</Text>
+        </View>
 
-          <Text style={styles.addItem}>+</Text>
-          
-          <MaterialIcons style={{alignSelf: "center"}}name="delete" size={24} color="#8C5674" />
+        <TouchableOpacity
+          onPress={() => dispatch(incrementQuantity(props.item.id))}
+          style={styles.addItem}
+        >
+          <Text>+</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ alignSelf: "center" }}
+          onPress={() => dispatch(removeItem(props.item.id))}
+        >
+          <MaterialIcons name="delete" size={24} color="#8C5674" />
+        </TouchableOpacity>
       </View>
-)
-}
-const CartScreen = (props) => {
+    );
+  };
+
   return (
-    <View style={{ flex: 1, backgroundColor: "#dcb688", alignItems: "flex-start" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#dcb688",
+      }}
+    >
       <StatusBarSpace />
 
       <View style={styles.firstContainer}>
-       <Text style={styles.cartTitle}>Cart</Text>
+        <Text style={styles.cartTitle}>Cart</Text>
 
-      <View style={styles.subtotalContainer}>
-        <Text style={styles.subtotal}>Subtotal:</Text>
-        <Text style={styles.subtotal}>$60</Text>
-      </View> 
+        <View style={styles.subtotalContainer}>
+          <Text style={styles.subtotal}>Subtotal:</Text>
+          <Text style={styles.subtotal}>${getTotalQuantity()}</Text>
+        </View>
       </View>
-      
 
-      <View style={styles.toCheckoutButton}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CheckoutScreen" as never)}
+        style={styles.toCheckoutButton}
+      >
         <Text style={styles.toCheckoutText}>Proceed to Checkout</Text>
-      </View>
+      </TouchableOpacity>
 
-      <ProdcutsInCart />
-      <ProdcutsInCart />
-      <ProdcutsInCart />
+      <FlatList
+        data={cart}
+        renderItem={ProductsInCart}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
@@ -58,7 +112,7 @@ const CartScreen = (props) => {
 export default CartScreen;
 
 const styles = StyleSheet.create({
-  firstContainer:{
+  firstContainer: {
     flexDirection: "row",
     marginBottom: 20,
   },
@@ -66,7 +120,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     marginTop: 30,
     marginLeft: 15,
-
   },
   subtotalContainer: {
     width: 270,
@@ -82,7 +135,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 10,
     paddingRight: 10,
-
   },
   toCheckoutButton: {
     backgroundColor: "#8C5674",
@@ -90,14 +142,14 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 5,
     alignSelf: "center",
+    justifyContent: "center",
     marginBottom: 30,
   },
   toCheckoutText: {
     color: "white",
     fontSize: 13,
     textAlign: "center",
-    paddingTop: 3,
-   },
+  },
   itemsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -106,43 +158,32 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 10,
-    marginBottom:20,
+    marginBottom: 20,
   },
   imageBox: {
-    width :80,
+    width: 80,
     height: 100,
     backgroundColor: "gray",
     borderRadius: 10,
     marginLeft: -20,
-
   },
   product: {
-      alignSelf: "center",
-      marginLeft: -20,
-
+    alignSelf: "center",
+    marginLeft: -20,
   },
   productName: {
     alignSelf: "center",
-
   },
-  productPrice: {
-    // alignSelf: "center",
-
-
-  },
+  productPrice: {},
   quantity: {
     alignSelf: "center",
     marginLeft: -20,
     marginRight: -20,
-
-
-
   },
   removeItem: {
     alignSelf: "center",
   },
   addItem: {
-      alignSelf: "center",
-
-},
+    alignSelf: "center",
+  },
 });
