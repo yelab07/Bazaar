@@ -9,11 +9,11 @@ import { Product } from '../../models/products.model';
 
 type ParamList = { Params: { search: string } };
 
-const RenderProducts = (products: Product[]) => {
+const RenderProducts = (products: Product[], search: string) => {
 
   const navigation = useNavigation();
   return (
-    products?.map((product, index) => {
+    products?.filter(productItems => productItems.category === search || productItems.title.toLowerCase().includes(search.toLowerCase()) || productItems.description.toLowerCase().includes(search.toLowerCase()) )?.map((product, index) => {
       return (
         <View key={index}
         >
@@ -63,9 +63,9 @@ const ProductsScreen = () => {
       {isLoading && <Text>...Loading </Text>}
       {error && <Text>...Something went wrong </Text>}
       {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
-        <Text style={styles.title}>Our Products</Text>
+        
 
-        {RenderProducts(products)}
+        {RenderProducts(products, route.params.search)}
 
       </ScrollView>)}
     </SafeAreaView>
