@@ -8,11 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import { addToCart } from "../../redux/cartSlice";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { useProductQuery } from "../../services/productsApi";
 import { RouteProp } from "@react-navigation/native";
 import QuantitySelector from "../../components/QuantitySelector";
 import { scale } from "react-native-size-matters";
+import { Product } from '../../models/products.model';
+import { useDispatch } from "react-redux";
 
 type ParamList = { Params: { id: string } };
 type Props = {
@@ -20,13 +23,18 @@ type Props = {
 };
 
 const ProductDetailsScreen = ({ onPress }: Props) => {
+  const dispatch = useDispatch()
+
   const navigation = useNavigation();
   const route = useRoute<RouteProp<ParamList, "Params">>();
   const { id } = route.params;
   const { data } = useProductQuery(id);
   const [quantity, setQuantity] = useState<any>(1);
 
-  const onAddToCart = () => { };
+  const onAddToCart = (product: Product, quantity: number) => {
+    dispatch(addToCart({ ...product, quantity }))
+  };
+
 
   return (
     <View style={styles.container}>
@@ -82,7 +90,7 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
           <Text style={styles.description}>{data?.description}</Text>
         </View>
         <View style={styles.addToCartWrapper}>
-          <TouchableOpacity style={styles.addButton} onPress={onAddToCart}>
+          <TouchableOpacity style={styles.addButton} onPress={() => onAddToCart(data as any, quantity)}>
             <Text style={styles.addButtonText}>Add To Cart</Text>
           </TouchableOpacity>
         </View>
