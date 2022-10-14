@@ -33,7 +33,6 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
 
   const onAddToCart = (product: Product, quantity: number) => {
     dispatch(addToCart({ ...product, quantity }))
-    console.log(quantity)
   };
 
 
