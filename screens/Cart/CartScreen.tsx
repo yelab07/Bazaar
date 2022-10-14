@@ -18,7 +18,7 @@ const CartItem = ({
   quantity = 0,
 }: {
   id: number;
-  image: any;
+  image: string;
   title: string;
   price: number;
   quantity: number;
@@ -27,7 +27,8 @@ const CartItem = ({
   return (
     <View style={styles.itemsContainer}>
       <View style={styles.imageBox}>
-        <Image style={styles.img} source={image} />
+        <Image style={styles.img}  source={{ uri: `${image}` }}
+ />
       </View>
 
       <View style={styles.product}>
@@ -74,9 +75,6 @@ const Total = () => {
 
   return (
     <View style={styles.productPrice}>
-      {/* <Text>Qty: </Text>
-      <Text style={styles.productPrice}>{getTotal().totalQuantity} 
-      </Text>  */}
       <Text style={styles.productPrice}>$ {getTotal().totalPrice}</Text>
     </View>
   );
@@ -108,7 +106,6 @@ const CartScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* <View style={styles.itemsContainer}> */}
       {cart?.map(
         (item: {
           price: number;
@@ -127,7 +124,6 @@ const CartScreen = () => {
           />
         )
       )}
-      {/* </View> */}
     </View>
   );
 };
@@ -186,7 +182,6 @@ const styles = StyleSheet.create({
   imageBox: {
     width: 80,
     height: 100,
-    backgroundColor: "gray",
     borderRadius: 10,
     marginLeft: -20,
   },
@@ -215,7 +210,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   img: {
-    width: 100,
-    height: 80,
+    width: 80,
+    height: 100,
   },
 });
