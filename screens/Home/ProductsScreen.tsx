@@ -11,68 +11,61 @@ import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp } from "@react-navigation/native";
-import {
-  useProductsQuery,
-  useProductsInCategoryQuery,
-} from "../../services/productsApi";
+import { useProductsQuery } from "../../services/productsApi";
 
 import colors from "../../data/colors";
 
 import { Product } from "../../models/products.model";
 
 type ParamList = {
-  Params: { query: string; category: string; search: string };
-};
-
-const filteredProducts = (products: Product[], search: string) => {
-  function checkAdult(item: any) {
-    return item.title.toLowerCase().includes(search.toLowerCase());
-  }
-
-  return products.filter(checkAdult);
+  Params: { query: string; search: string };
 };
 
 const RenderProducts = (products: Product[], search: string) => {
   const navigation = useNavigation();
 
-  //result depends on whether there is a search term given from the search bar
-  const result = search ? filteredProducts(products, search) : products;
+  return products
+    ?.filter(
+      (productItems) =>
+        productItems.category === search ||
+        productItems.title.toLowerCase().includes(search.toLowerCase()) ||
+        productItems.description.toLowerCase().includes(search.toLowerCase())
+    )
+    ?.map((product, index) => {
+      return (
+        <View key={index}>
+          <TouchableOpacity
+            style={styles.productsView}
+            onPress={() =>
+              navigation.navigate(
+                "ProductDetailsScreen" as never,
+                { id: product.id } as never
+              )
+            }
+          >
+            <View style={styles.productsImageBox}>
+              <Image
+                resizeMode="contain"
+                style={{
+                  width: 80,
+                  borderRadius: 15,
 
-  return result?.map((product, index) => {
-    return (
-      <View key={index}>
-        <TouchableOpacity
-          style={styles.productsView}
-          onPress={() =>
-            navigation.navigate(
-              "ProductDetailsScreen" as never,
-              { id: product.id } as never
-            )
-          }
-        >
-          <View style={styles.productsImageBox}>
-            <Image
-              resizeMode="contain"
-              style={{
-                width: 80,
-                borderRadius: 15,
-
-                aspectRatio: 1,
-              }}
-              source={{ uri: `${product.image}` }}
-            />
-          </View>
-          <View style={styles.productsBox}>
-            <Text numberOfLines={2} ellipsizeMode="tail">
-              {product.title}
-            </Text>
-            <Text>{product.rating.rate}</Text>
-            <Text>${product.price}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  });
+                  aspectRatio: 1,
+                }}
+                source={{ uri: `${product.image}` }}
+              />
+            </View>
+            <View style={styles.productsBox}>
+              <Text numberOfLines={2} ellipsizeMode="tail">
+                {product.title}
+              </Text>
+              <Text>{product.rating.rate}</Text>
+              <Text>${product.price}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      );
+    });
 };
 
 const ProductsScreen = () => {
@@ -84,9 +77,7 @@ const ProductsScreen = () => {
     isLoading,
     isFetching,
     isSuccess,
-  } = route.params.query == "category"
-    ? useProductsInCategoryQuery(route.params.category)
-    : useProductsQuery();
+  } = useProductsQuery();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#dcb688" }}>

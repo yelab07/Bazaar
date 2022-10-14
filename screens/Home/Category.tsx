@@ -29,7 +29,7 @@ const Category = ({ category, image, index }: CategoryProps) => {
           onPress={() =>
             navigation.navigate(
               "ProductsScreen" as never,
-              { query: "category", category: category } as never
+              { search: category } as never
             )
           }
         >
