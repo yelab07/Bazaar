@@ -13,6 +13,9 @@ import { useNavigation } from "@react-navigation/core";
 import { useProductsQuery } from "../../services/productsApi";
 
 
+
+
+
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { data, error, isLoading, isFetching, isSuccess } = useProductsQuery()
