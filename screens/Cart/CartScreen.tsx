@@ -60,7 +60,7 @@ const CartItem = ({
 };
 
 const Total = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const getTotal = () => {
     let totalQuantity = 0;
@@ -83,7 +83,7 @@ const Total = () => {
 };
 
 const CartScreen = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const navigation = useNavigation();
 
