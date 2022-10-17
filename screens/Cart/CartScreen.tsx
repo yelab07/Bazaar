@@ -15,6 +15,7 @@ import {
 } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
+import StatusBarSpace from "../../components/StatusBarSpace";
 
 const CartScreen = () => {
   const cart = useSelector((state: any) => state.cart.cart.cart);
@@ -88,6 +89,8 @@ const CartScreen = () => {
         backgroundColor: "#dcb688",
       }}
     >
+      <StatusBarSpace />
+
       <View style={styles.firstContainer}>
         <Text style={styles.cartTitle}>Cart</Text>
 

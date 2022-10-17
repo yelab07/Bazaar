@@ -38,9 +38,19 @@ const cartSlice = createSlice({
       );
       state.cart = removeItem;
     },
+    clearCart: (state, action) => {
+      while (state.cart.length > 0) {
+        state.cart.pop();
+      }
+    },
   },
 });
 
 export const cartReducer = cartSlice.reducer;
-export const { addToCart, incrementQuantity, decrementQuantity, removeItem } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+  clearCart,
+} = cartSlice.actions;

@@ -6,100 +6,136 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useRoute } from "@react-navigation/core";
 import { useProductQuery } from "../../services/productsApi";
 import { RouteProp } from "@react-navigation/native";
 import QuantitySelector from "../../components/QuantitySelector";
 import { scale } from "react-native-size-matters";
+import colors from "../../data/colors";
 
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
 
 type ParamList = { Params: { id: string } };
-type Props = {
-  onPress: () => void;
-};
 
-const ProductDetailsScreen = ({ onPress }: Props) => {
+const ProductDetailsScreen = () => {
   const route = useRoute<RouteProp<ParamList, "Params">>();
   const { id } = route.params;
-  const { data } = useProductQuery(id);
+  const { data, isLoading, isSuccess } = useProductQuery(id);
   const [quantity, setQuantity] = useState<any>(1);
+  const [showMore, setShowMore] = useState(false);
+  const [numOfLines, setNumOfLines] = useState(5);
   const dispatch = useDispatch();
+
+  const onTextLayout = useCallback((e: any) => {
+    setShowMore(e.nativeEvent.lines.length > numOfLines);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={{ alignItems: "center", marginHorizontal: 0 }}>
-          <View>
+      {isLoading && <ActivityIndicator size="small" color={colors.violet} />}
+      {isSuccess && (
+        <ScrollView>
+          <View style={{ alignItems: "center", marginHorizontal: 0 }}>
             <View>
-              <Text style={styles.title}>{data?.title}</Text>
+              <View>
+                <Text style={styles.title}>{data?.title}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: scale(20),
+                  marginHorizontal: scale(20),
+                }}
+              >
+                <Text style={styles.category}>{data?.category}</Text>
+                <Text style={styles.rating}> Rating: {data?.rating.rate}</Text>
+              </View>
             </View>
+            <View style={styles.imageContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.productImg}
+                source={{ uri: `${data?.image}` }}
+              />
+            </View>
+
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginBottom: scale(20),
-                marginHorizontal: scale(20),
+                flex: 1,
+                width: 250,
+                marginTop: 20,
               }}
             >
-              <Text style={styles.category}>{data?.category}</Text>
-              <Text style={styles.rating}> Rating: {data?.rating.rate}</Text>
+              <View>
+                <Text style={styles.price}> ${data?.price}</Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    alignContent: "center",
+                    color: "green",
+                  }}
+                >
+                  In stock
+                </Text>
+              </View>
+              <View>
+                <QuantitySelector
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                />
+              </View>
             </View>
           </View>
-          <View style={styles.imageContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.productImg}
-              source={{ uri: `${data?.image}` }}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              flex: 1,
-              width: 250,
-              marginTop: 20,
-            }}
-          >
-            <View>
-              <Text style={styles.price}> ${data?.price}</Text>
-              <Text
-                style={{ fontSize: 20, alignContent: "center", color: "green" }}
+          <View>
+            <Text
+              numberOfLines={numOfLines}
+              style={styles.description}
+              onTextLayout={onTextLayout}
+            >
+              {data?.description}
+            </Text>
+            {showMore && (
+              <TouchableOpacity
+                onPress={() => setNumOfLines(numOfLines === 5 ? 0 : 5)}
+                style={{ marginRight: 50, marginBottom: 10 }}
               >
-                In stock
-              </Text>
-            </View>
-            <View>
-              <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-            </View>
+                <Text
+                  style={{
+                    color: colors.violet,
+                    margin: 0,
+                    textAlign: "right",
+                  }}
+                >
+                  {numOfLines === 5 ? "...more" : "...less"}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
-        </View>
-        <View>
-          <Text style={styles.description}>{data?.description}</Text>
-        </View>
-        <View style={styles.addToCartWrapper}>
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => {
-              dispatch(
-                addToCart({
-                  ...data,
-                  quantity: quantity,
-                })
-              );
-              Alert.alert("Item Added!");
-            }}
-          >
-            <Text style={styles.addButtonText}>Add To Cart</Text>
-          </TouchableOpacity>
-        </View>
-        <View></View>
-      </ScrollView>
+          <View style={styles.addToCartWrapper}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => {
+                dispatch(
+                  addToCart({
+                    ...data,
+                    quantity: quantity,
+                  })
+                );
+                Alert.alert("Item Added!");
+              }}
+            >
+              <Text style={styles.addButtonText}>Add To Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };
