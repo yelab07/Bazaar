@@ -87,7 +87,7 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
           </View>
         </View>
         <View>
-          <Text style={styles.description}>{data?.description}</Text>
+          <Text numberOfLines={5} style={styles.description}>{data?.description}</Text>
         </View>
         <View style={styles.addToCartWrapper}>
           <TouchableOpacity style={styles.addButton} onPress={() => onAddToCart(data as any, quantity)}>
