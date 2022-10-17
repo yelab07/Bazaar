@@ -88,7 +88,11 @@ const ProductsScreen = () => {
           showsVerticalScrollIndicator={false}
           style={{ padding: 10 }}
         >
-          {RenderProducts(products, route.params.search)}
+          {RenderProducts(products, route.params.search).length !== 0 ? (
+            RenderProducts(products, route.params.search)
+          ) : (
+            <Text style={{ textAlign: "center" }}>No results found.</Text>
+          )}
         </ScrollView>
       )}
     </SafeAreaView>

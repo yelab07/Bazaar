@@ -27,14 +27,14 @@ const CheckoutScreen = () => {
   const [totalTax, setTotalTax] = useState(0);
   const navigation = useNavigation();
 
-  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const getTotal = () => {
     let totalPrice = 0;
     cart.forEach((item: { price: number; quantity: number }) => {
       totalPrice += item.price * item.quantity;
     });
-    return totalPrice;
+    return parseFloat(totalPrice.toFixed(2));
   };
 
   useEffect(() => {

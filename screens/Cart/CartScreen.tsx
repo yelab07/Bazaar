@@ -4,9 +4,9 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React from "react";
-import StatusBarSpace from "../../components/StatusBarSpace";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   incrementQuantity,
@@ -17,23 +17,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
 const CartScreen = () => {
-  const cart = useSelector((state: any) => state.cart.cart);
+  const cart = useSelector((state: any) => state.cart.cart.cart);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
-  const getTotalQuantity = () => {
+  const getTotal = () => {
     let total = 0;
     cart.forEach((item: any) => {
       total += item.price * item.quantity;
     });
-    return total;
+    return total.toFixed(2);
   };
 
   const ProductsInCart = (props: any) => {
     return (
       <View style={styles.itemsContainer}>
-        <View style={styles.imageBox}></View>
+        <View style={styles.imageBox}>
+          <Image
+            resizeMode="contain"
+            style={styles.img}
+            source={{ uri: `${props.item.image}` }}
+          />
+        </View>
 
         <View style={styles.product}>
           <Text
@@ -66,7 +72,7 @@ const CartScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={{ alignSelf: "center" }}
+          style={{ alignSelf: "center", marginRight: 15 }}
           onPress={() => dispatch(removeItem(props.item.id))}
         >
           <MaterialIcons name="delete" size={24} color="#8C5674" />
@@ -82,18 +88,17 @@ const CartScreen = () => {
         backgroundColor: "#dcb688",
       }}
     >
-      <StatusBarSpace />
-
       <View style={styles.firstContainer}>
         <Text style={styles.cartTitle}>Cart</Text>
 
         <View style={styles.subtotalContainer}>
           <Text style={styles.subtotal}>Subtotal:</Text>
-          <Text style={styles.subtotal}>${getTotalQuantity()}</Text>
+          <Text style={styles.subtotal}>${getTotal()}</Text>
         </View>
       </View>
 
       <TouchableOpacity
+        disabled={parseFloat(getTotal()) === 0.0}
         onPress={() => navigation.navigate("CheckoutScreen" as never)}
         style={styles.toCheckoutButton}
       >
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: 350,
     height: 100,
     backgroundColor: "white",
@@ -163,9 +168,10 @@ const styles = StyleSheet.create({
   imageBox: {
     width: 80,
     height: 100,
-    backgroundColor: "gray",
-    borderRadius: 10,
-    marginLeft: -20,
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   product: {
     alignSelf: "center",
@@ -173,6 +179,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     alignSelf: "center",
+    width: 150,
   },
   productPrice: {},
   quantity: {
@@ -185,5 +192,9 @@ const styles = StyleSheet.create({
   },
   addItem: {
     alignSelf: "center",
+  },
+  img: {
+    width: 60,
+    height: 80,
   },
 });
