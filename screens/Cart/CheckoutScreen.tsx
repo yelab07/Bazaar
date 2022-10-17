@@ -27,7 +27,7 @@ const CheckoutScreen = () => {
   const [totalTax, setTotalTax] = useState(0);
   const navigation = useNavigation();
 
-  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const getTotal = () => {
     let totalPrice = 0;

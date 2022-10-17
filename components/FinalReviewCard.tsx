@@ -43,7 +43,7 @@ const FinalReviewCard = (props: any) => {
           <Text style={styles.orderTitle}>$5.99</Text>
           <Text style={styles.orderTitle}>${props.totalTax.toFixed(2)}</Text>
           <Text style={styles.orderTitle}>
-            ${props.getTotal() + props.totalTax + 5.99}
+            ${(props.getTotal() + props.totalTax + 5.99).toFixed(2)}
           </Text>
         </View>
       </View>

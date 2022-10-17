@@ -9,15 +9,17 @@ import { Product } from '../../models/products.model';
 
 type ParamList = { Params: { search: string } };
 
-const RenderProducts = (products: Product[]) => {
+const RenderProducts = (products: Product[], search: string) => {
 
   const navigation = useNavigation();
   return (
-    products?.map((product, index) => {
+    products?.filter(productItems => productItems.category === search || productItems.title.toLowerCase().includes(search.toLowerCase()) || productItems.description.toLowerCase().includes(search.toLowerCase()))?.map((product, index) => {
       return (
         <View key={index}
         >
-          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never)}>
+          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never ,{id: product.id} as never) }
+          
+          >
             <View style={styles.productsImageBox}>
               <Image
                 resizeMode="cover"
@@ -33,7 +35,7 @@ const RenderProducts = (products: Product[]) => {
             </View>
             <View style={styles.productsBox}>
 
-              <Text>{product.title}</Text>
+              <Text numberOfLines={1}>{product.title}</Text>
               <Text>{product.rating.rate}</Text>
               <Text>${product.price}</Text>
 
@@ -62,10 +64,10 @@ const ProductsScreen = () => {
 
       {isLoading && <Text>...Loading </Text>}
       {error && <Text>...Something went wrong </Text>}
-      {isSuccess && (<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: "#dcb688", padding: 10 }}>
-        <Text style={styles.title}>Our Products</Text>
+      {isSuccess && (<ScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }} showsVerticalScrollIndicator={false} style={{ padding: 10 }}>
 
-        {RenderProducts(products)}
+
+        {RenderProducts(products, route.params.search)}
 
       </ScrollView>)}
     </SafeAreaView>
@@ -86,10 +88,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: 300,
     height: 300,
+
   },
 
   secondViewContainer: {
     alignItems: "center",
+
   },
   productsView: {
     width: 350,
@@ -103,6 +107,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+
+
   },
   productsImageBox: {
     width: 120,
@@ -116,5 +122,7 @@ const styles = StyleSheet.create({
     width: 175,
     height: 100,
     justifyContent: "center",
+
+
   },
 });
