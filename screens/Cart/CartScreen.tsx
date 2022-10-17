@@ -32,25 +32,25 @@ const CartItem = ({
       </View>
 
       <View style={styles.product}>
-        <Text style={styles.productName}>{title}</Text>
+        <Text style={styles.productName} numberOfLines={1}>{title}</Text>
         <Text style={styles.productPrice}>${price}</Text>
       </View>
 
-      <TouchableOpacity onPress={() => dispatch(decrementQuantity(id))}>
-        <Text style={styles.removeItem}>-</Text>
+      <TouchableOpacity onPress={() => dispatch(decrementQuantity(id))} style={styles.removeItem}>
+        <Text >-</Text>
       </TouchableOpacity>
 
       <View style={styles.quantity}>
+         <Text style={styles.qty}>Qty</Text>
         <Text style={{ textAlign: "center" }}>{quantity}</Text>
       </View>
 
-      <TouchableOpacity onPress={() => dispatch(incrementQuantity(id))}>
-        <Text style={styles.addItem}>+</Text>
+      <TouchableOpacity onPress={() => dispatch(incrementQuantity(id))} style={styles.addItem}>
+        <Text>+</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => dispatch(removeItem(id))}>
+      <TouchableOpacity onPress={() => dispatch(removeItem(id))} style={{ alignSelf: "center" }}>
         <MaterialIcons
-          style={{ alignSelf: "center" }}
           name="delete"
           size={24}
           color="#8C5674"
@@ -68,7 +68,8 @@ const Total = () => {
     let totalPrice = 0;
     cart.forEach((item: { price: number; quantity: number }) => {
       totalQuantity += item.quantity;
-      totalPrice += item.price * item.quantity;
+      totalPrice += Math.round((item.price * item.quantity)*100)/100
+      // totalPrice += (item.price*item.quantity).toFixed(2)
     });
     return { totalPrice, totalQuantity };
   };
@@ -180,35 +181,45 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   imageBox: {
-    width: 80,
-    height: 100,
-    borderRadius: 10,
-    marginLeft: -20,
+    marginLeft: -6,
   },
   product: {
     alignSelf: "center",
     marginLeft: -20,
+    width: 90,
   },
   productName: {
     alignSelf: "center",
+    fontSize: 12,
   },
   productPrice: {
     flexDirection: "row",
     marginRight: 15,
-    fontSize: 20,
+    fontSize: 16,
     textAlign: "center",
+    alignSelf: "center"
   },
   quantity: {
     alignSelf: "center",
     marginLeft: -20,
     marginRight: -20,
+    marginBottom: 10.
   },
   removeItem: {
     alignSelf: "center",
+    marginRight: 5,
+
   },
   addItem: {
     alignSelf: "center",
+    marginLeft: 5,
+    
   },
+  qty: {
+    marginTop: 10,
+    marginBottom: 4,
+  },
+ 
   img: {
     width: 80,
     height: 100,
