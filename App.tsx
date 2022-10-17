@@ -10,13 +10,29 @@ import HomeNavigator from "./screens/Home/HomeNavigator";
 import CartNavigator from "./screens/Cart/CartNavigator";
 //import AccountNavigator from "./screens/Account/AccountNavigator";
 import SearchBar from "./components/SearchBar";
-import { Provider } from "react-redux";
+import { Provider} from "react-redux";
 import { store } from "./store"
+import { Text, View } from "react-native";
+import TotalQty from "./screens/Cart/totalQty"
+
 
 const Tab = createBottomTabNavigator();
 const persistor = persistStore(store)
 
 export default function App() {
+
+
+  // const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+
+  // const getTotalQuantity = () => {
+  //   let totalQuantity = 0
+  //   cart.forEach((item: { quantity: number }) => {
+      
+  //     totalQuantity += item.quantity
+      
+  //   });
+  //   return totalQuantity.toFixed(2) ;
+  // }
 
 
   return (
@@ -34,7 +50,8 @@ export default function App() {
                 tabBarInactiveTintColor: "#000",
                 tabBarIcon: (tabInfo) => {
                   return (
-                    <Ionicons
+                    
+                      <Ionicons
                       name="md-home"
                       size={24}
                       color={tabInfo.focused ? "#814e66" : "#000"}
@@ -68,11 +85,21 @@ export default function App() {
                 tabBarInactiveTintColor: "#000",
                 tabBarIcon: (tabInfo) => {
                   return (
-                    <Ionicons
+                    
+                     <View >
+                      <TotalQty />
+                      <Ionicons
                       name="cart"
                       size={26}
                       color={tabInfo.focused ? "#814e66" : "#000"}
+                      style={{marginLeft:15,}}
                     />
+                    
+                     </View>
+                      
+                    
+                    
+                    
                   );
                 },
               }}

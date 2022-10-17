@@ -1,8 +1,20 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
+import { Feather } from "@expo/vector-icons";
+import colors from "../../data/colors";
+
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+
+
 
 import {
   decrementQuantity,
@@ -24,37 +36,46 @@ const CartItem = ({
   quantity: number;
 }) => {
   const dispatch = useDispatch();
+
+
   return (
     <View style={styles.itemsContainer}>
       <View style={styles.imageBox}>
-        <Image style={styles.img}  source={{ uri: `${image}` }}
- />
+        <Image style={styles.img} source={{ uri: `${image}` }} />
       </View>
 
       <View style={styles.product}>
-        <Text style={styles.productName} numberOfLines={1}>{title}</Text>
+        <Text style={styles.productName} numberOfLines={2}>
+        {title}
+      </Text>
+        
         <Text style={styles.productPrice}>${price}</Text>
       </View>
 
-      <TouchableOpacity onPress={() => dispatch(decrementQuantity(id))} style={styles.removeItem}>
-        <Text >-</Text>
+      <TouchableOpacity
+        onPress={() => dispatch(decrementQuantity(id))}
+        style={styles.removeItem}
+      >
+        <Text>-</Text>
       </TouchableOpacity>
 
       <View style={styles.quantity}>
-         <Text style={styles.qty}>Qty</Text>
+        <Text style={styles.qty}>Qty</Text>
         <Text style={{ textAlign: "center" }}>{quantity}</Text>
       </View>
 
-      <TouchableOpacity onPress={() => dispatch(incrementQuantity(id))} style={styles.addItem}>
+      <TouchableOpacity
+        onPress={() => dispatch(incrementQuantity(id))}
+        style={styles.addItem}
+      >
         <Text>+</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => dispatch(removeItem(id))} style={{ alignSelf: "center" }}>
-        <MaterialIcons
-          name="delete"
-          size={24}
-          color="#8C5674"
-        />
+      <TouchableOpacity
+        onPress={() => dispatch(removeItem(id))}
+        style={{ alignSelf: "center" }}
+      >
+        <MaterialIcons name="delete" size={24} color="#8C5674" />
       </TouchableOpacity>
     </View>
   );
@@ -64,19 +85,16 @@ const Total = () => {
   const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const getTotal = () => {
-    let totalQuantity = 0;
     let totalPrice = 0;
     cart.forEach((item: { price: number; quantity: number }) => {
-      totalQuantity += item.quantity;
-      totalPrice += Math.round((item.price * item.quantity)*100)/100
-      // totalPrice += (item.price*item.quantity).toFixed(2)
+      totalPrice += item.price * item.quantity;
     });
-    return { totalPrice, totalQuantity };
+    return totalPrice.toFixed(2);
   };
 
   return (
     <View style={styles.productPrice}>
-      <Text style={styles.productPrice}>$ {getTotal().totalPrice}</Text>
+      <Text style={styles.productPrice}>${getTotal()}</Text>
     </View>
   );
 };
@@ -91,6 +109,14 @@ const CartScreen = () => {
       style={{ flex: 1, backgroundColor: "#dcb688", alignItems: "flex-start" }}
     >
       <View style={styles.firstContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Feather
+            style={{ marginTop: 40, marginLeft: 10 }}
+            name="arrow-left"
+            size={24}
+            color={colors.violet}
+          />
+        </TouchableOpacity>
         <Text style={styles.cartTitle}>Cart</Text>
 
         <View style={styles.subtotalContainer}>
@@ -107,24 +133,31 @@ const CartScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {cart?.map(
-        (item: {
-          price: number;
-          quantity: number;
-          id: number;
-          image: string;
-          title: string;
-        }) => (
-          <CartItem
-            key={item.id}
-            id={item.id}
-            image={item.image}
-            title={item.title}
-            price={item.price}
-            quantity={item.quantity}
-          />
-        )
-      )}
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.scroll}>
+          {cart?.map(
+            (item: {
+              price: number;
+              quantity: number;
+              id: number;
+              image: string;
+              title: string;
+            }) => (
+              <CartItem
+                key={item.id}
+                id={item.id}
+                image={item.image}
+                title={item.title}
+                price={item.price}
+                quantity={item.quantity}
+              />
+            )
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -135,11 +168,13 @@ const styles = StyleSheet.create({
   firstContainer: {
     flexDirection: "row",
     marginBottom: 20,
+    justifyContent: "space-between",
   },
   cartTitle: {
     fontSize: 35,
-    marginTop: 30,
-    marginLeft: 15,
+    marginTop: 28,
+    marginLeft: 5,
+    marginRight: -20,
   },
   subtotalContainer: {
     width: 270,
@@ -154,7 +189,7 @@ const styles = StyleSheet.create({
   subtotal: {
     fontSize: 20,
     paddingLeft: 10,
-    paddingRight: 10,
+    marginRight: 110,
   },
   toCheckoutButton: {
     backgroundColor: "#8C5674",
@@ -197,31 +232,32 @@ const styles = StyleSheet.create({
     marginRight: 15,
     fontSize: 16,
     textAlign: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   quantity: {
     alignSelf: "center",
     marginLeft: -20,
     marginRight: -20,
-    marginBottom: 10.
+    marginBottom: 10,
   },
   removeItem: {
     alignSelf: "center",
     marginRight: 5,
-
   },
   addItem: {
     alignSelf: "center",
     marginLeft: 5,
-    
   },
   qty: {
     marginTop: 10,
     marginBottom: 4,
   },
- 
+
   img: {
     width: 80,
     height: 100,
+  },
+  scroll: {
+    marginLeft: 25,
   },
 });
