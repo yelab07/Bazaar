@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { useSelector } from "react-redux";
 
-const totalQty = () => {
+const TotalQty = () => {
   const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
 
   const getTotalQuantity = () => {
@@ -12,7 +12,7 @@ const totalQty = () => {
     });
 
     if(totalQuantity > 99){
-        return 99 + "+"
+        return "99+"
     } else{
         return totalQuantity;
     }
@@ -25,7 +25,7 @@ const totalQty = () => {
   );
 };
 
-export default totalQty;
+export default TotalQty;
 
 const styles = StyleSheet.create({
   totalqty: {

@@ -12,7 +12,7 @@ import SearchBar from "./components/SearchBar";
 import { Provider} from "react-redux";
 import { store } from "./store"
 import { View } from "react-native";
-import TotalQty from "./screens/Cart/totalQty"
+import TotalQty from "./screens/Cart/TotalQty"
 
 
 const Tab = createBottomTabNavigator();
