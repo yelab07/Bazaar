@@ -113,7 +113,7 @@ const ProductDetailsScreen = () => {
                     textAlign: "right",
                   }}
                 >
-                  {numOfLines === 5 ? "...more" : "...less"}
+                  {numOfLines === 5 ? "See more" : "See less"}
                 </Text>
               </TouchableOpacity>
             )}

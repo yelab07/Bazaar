@@ -1,4 +1,5 @@
 import * as React from "react";
+import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import "react-native-gesture-handler";
@@ -9,6 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import HomeNavigator from "./screens/Home/HomeNavigator";
 import CartNavigator from "./screens/Cart/CartNavigator";
 import SearchBar from "./components/SearchBar";
+import TotalQty from "./screens/Cart/TotalQty";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
@@ -48,11 +50,15 @@ export default function App() {
                 tabBarInactiveTintColor: "#000",
                 tabBarIcon: (tabInfo) => {
                   return (
-                    <Ionicons
-                      name="cart"
-                      size={26}
-                      color={tabInfo.focused ? "#814e66" : "#000"}
-                    />
+                    <View>
+                      <TotalQty />
+                      <Ionicons
+                        name="cart"
+                        size={26}
+                        color={tabInfo.focused ? "#814e66" : "#000"}
+                        style={{ marginLeft: 15 }}
+                      />
+                    </View>
                   );
                 },
               }}
