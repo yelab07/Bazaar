@@ -17,7 +17,9 @@ const RenderProducts = (products: Product[], search: string) => {
       return (
         <View key={index}
         >
-          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never)}>
+          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never ,{id: product.id} as never) }
+          
+          >
             <View style={styles.productsImageBox}>
               <Image
                 resizeMode="cover"
@@ -33,7 +35,7 @@ const RenderProducts = (products: Product[], search: string) => {
             </View>
             <View style={styles.productsBox}>
 
-              <Text>{product.title}</Text>
+              <Text numberOfLines={1}>{product.title}</Text>
               <Text>{product.rating.rate}</Text>
               <Text>${product.price}</Text>
 
