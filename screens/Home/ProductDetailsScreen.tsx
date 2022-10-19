@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import ReadMore from '@fawazahmed/react-native-read-more';
+
 import { addToCart } from "../../redux/cartSlice";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { useProductQuery } from "../../services/productsApi";
@@ -86,8 +88,8 @@ const ProductDetailsScreen = ({ onPress }: Props) => {
             </View>
           </View>
         </View>
-        <View>
-          <Text numberOfLines={5} style={styles.description}>{data?.description}</Text>
+        <View style={styles.root}>
+          <ReadMore numberOfLines={3} seeMoreStyle={{ color: "#8C5674", }} seeLessStyle={{ color: "#8C5674", }} style={styles.description}>{data?.description}</ReadMore>
         </View>
         <View style={styles.addToCartWrapper}>
           <TouchableOpacity style={styles.addButton} onPress={() => onAddToCart(data as any, quantity)}>
@@ -146,5 +148,9 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: "#FFFFFF",
     fontSize: 20,
+  },
+  root: {
+    flex: 1,
+    padding: 16,
   },
 });

@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/integration/react"
 import HomeNavigator from "./screens/Home/HomeNavigator";
 import CartNavigator from "./screens/Cart/CartNavigator";
 import SearchBar from "./components/SearchBar";
-import { Provider} from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "./store"
 import { View } from "react-native";
 import TotalQty from "./screens/Cart/TotalQty"
@@ -36,8 +36,8 @@ export default function App() {
                 tabBarInactiveTintColor: "#000",
                 tabBarIcon: (tabInfo) => {
                   return (
-                    
-                      <Ionicons
+
+                    <Ionicons
                       name="md-home"
                       size={24}
                       color={tabInfo.focused ? "#814e66" : "#000"}
@@ -46,7 +46,7 @@ export default function App() {
                 },
               }}
             />
-          
+
             <Tab.Screen
               name="Cart"
               component={CartNavigator}
@@ -56,21 +56,21 @@ export default function App() {
                 tabBarInactiveTintColor: "#000",
                 tabBarIcon: (tabInfo) => {
                   return (
-                    
-                     <View >
+
+                    <View >
                       <TotalQty />
                       <Ionicons
-                      name="cart"
-                      size={26}
-                      color={tabInfo.focused ? "#814e66" : "#000"}
-                      style={{marginLeft:15,}}
-                    />
-                    
-                     </View>
-                      
-                    
-                    
-                    
+                        name="cart"
+                        size={26}
+                        color={tabInfo.focused ? "#814e66" : "#000"}
+                        style={{ marginLeft: 15, }}
+                      />
+
+                    </View>
+
+
+
+
                   );
                 },
               }}

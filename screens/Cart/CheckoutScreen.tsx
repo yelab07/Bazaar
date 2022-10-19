@@ -4,12 +4,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import StatusBarSpace from "../../components/StatusBarSpace";
 import { Feather } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { clearCart } from "../../redux/cartSlice";
 
 import { useNavigation } from "@react-navigation/core";
 import getTaxFromZip from "../../utils/getTaxFromZip";
@@ -27,14 +30,15 @@ const CheckoutScreen = () => {
   const [totalTax, setTotalTax] = useState(0);
   const navigation = useNavigation();
 
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+  const dispatch = useDispatch();
 
   const getTotal = () => {
     let totalPrice = 0;
     cart.forEach((item: { price: number; quantity: number }) => {
       totalPrice += item.price * item.quantity;
     });
-    return totalPrice;
+    return parseFloat(totalPrice.toFixed(2));
   };
 
   useEffect(() => {
@@ -115,7 +119,15 @@ const CheckoutScreen = () => {
         <FinalReviewCard getTotal={getTotal} totalTax={totalTax} />
 
         <View style={styles.placeOrderBox}>
-          <TouchableOpacity style={styles.placeOrderButton}>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(clearCart(null));
+              Alert.alert("Your order has been placed!", "", [
+                { text: "OK", onPress: () => navigation.goBack() },
+              ]);
+            }}
+            style={styles.placeOrderButton}
+          >
             <Text style={{ color: colors.white }}>Place Order</Text>
           </TouchableOpacity>
         </View>
