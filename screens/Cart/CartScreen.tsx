@@ -46,9 +46,9 @@ const CartItem = ({
 
       <View style={styles.product}>
         <Text style={styles.productName} numberOfLines={2}>
-        {title}
-      </Text>
-        
+          {title}
+        </Text>
+
         <Text style={styles.productPrice}>${price}</Text>
       </View>
 
@@ -82,7 +82,7 @@ const CartItem = ({
 };
 
 const Total = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
   const getTotal = () => {
     let totalPrice = 0;
@@ -100,7 +100,7 @@ const Total = () => {
 };
 
 const CartScreen = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
   const navigation = useNavigation();
 

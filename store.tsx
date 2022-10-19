@@ -18,12 +18,10 @@ const persistConfig = {
   version: 1,
   storage: AsyncStorage,
 }
-const rootReducer = combineReducers({
-  cart: cartReducer,
-})
 
 
-const persistedCartReducer = persistReducer(persistConfig, rootReducer);
+
+const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
 export const store = configureStore({
   reducer: {
