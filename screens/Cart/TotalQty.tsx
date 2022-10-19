@@ -3,7 +3,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const TotalQty = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
+
 
   const getTotalQuantity = () => {
     let totalQuantity = 0;
@@ -11,10 +12,10 @@ const TotalQty = () => {
       totalQuantity += item.quantity;
     });
 
-    if(totalQuantity > 99){
-        return "99+"
-    } else{
-        return totalQuantity;
+    if (totalQuantity > 99) {
+      return "99+"
+    } else {
+      return totalQuantity;
     }
   };
 
