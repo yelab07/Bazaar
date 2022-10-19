@@ -12,19 +12,13 @@ import {
   REGISTER,
 } from "redux-persist";
 
-import { combineReducers } from "@reduxjs/toolkit";
-
 const persistConfig = {
   key: "root",
   version: 1,
   storage: AsyncStorage,
 };
 
-const rootReducer = combineReducers({
-  cart: cartReducer,
-});
-
-const persistedCartReducer = persistReducer(persistConfig, rootReducer);
+const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
 export const store = configureStore({
   reducer: {

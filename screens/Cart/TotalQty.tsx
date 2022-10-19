@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const TotalQty = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
   const getTotalQuantity = () => {
     let totalQuantity = 0;

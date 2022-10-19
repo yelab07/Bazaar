@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/core";
 import StatusBarSpace from "../../components/StatusBarSpace";
 
 const CartScreen = () => {
-  const cart = useSelector((state: any) => state.cart.cart.cart);
+  const cart = useSelector((state: any) => state.cart.cart);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
