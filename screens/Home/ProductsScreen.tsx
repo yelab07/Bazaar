@@ -14,12 +14,18 @@ const RenderProducts = (products: Product[], search: string) => {
   const navigation = useNavigation();
   return (
     products?.filter(productItems => productItems.category === search || productItems.title.toLowerCase().includes(search.toLowerCase()) || productItems.description.toLowerCase().includes(search.toLowerCase()))?.map((product, index) => {
+
       return (
+
+
+
         <View key={index}
         >
-          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never ,{id: product.id} as never) }
-          
+
+          <TouchableOpacity style={styles.productsView} onPress={() => navigation.navigate("ProductDetailsScreen" as never, { id: product.id } as never)}
+
           >
+
             <View style={styles.productsImageBox}>
               <Image
                 resizeMode="cover"
@@ -84,6 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     padding: 15,
   },
+
   firstContainer: {
     flexDirection: "column",
     width: 300,
@@ -96,7 +103,7 @@ const styles = StyleSheet.create({
 
   },
   productsView: {
-    width: 350,
+    width: 300,
     height: 100,
     backgroundColor: "white",
     marginBottom: 20,
