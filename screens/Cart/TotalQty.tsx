@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 const TotalQty = () => {
   const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
-
   const getTotalQuantity = () => {
     let totalQuantity = 0;
     cart.forEach((item: { quantity: number }) => {
@@ -31,10 +30,6 @@ export default TotalQty;
 const styles = StyleSheet.create({
   totalqty: {
     color: "white",
-    width: 20,
-    height: 20,
-    backgroundColor: "#814e66",
-    borderRadius: 10,
     textAlign: "center",
     fontSize: 9,
     paddingTop: 3,
@@ -42,5 +37,9 @@ const styles = StyleSheet.create({
   qtyView: {
     marginLeft: 39,
     marginBottom: -15,
+    width: 20,
+    height: 20,
+    backgroundColor: "#814e66",
+    borderRadius: 20,
   }
 });

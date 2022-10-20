@@ -39,7 +39,7 @@ const FinalReviewCard = (props: any) => {
             flex: 1,
           }}
         >
-          <Text style={styles.orderTitle}>${props.getTotal()}</Text>
+          <Text style={styles.orderTitle}>${(props.getTotal()).toFixed(2)}</Text>
           <Text style={styles.orderTitle}>$5.99</Text>
           <Text style={styles.orderTitle}>${props.totalTax.toFixed(2)}</Text>
           <Text style={styles.orderTitle}>
