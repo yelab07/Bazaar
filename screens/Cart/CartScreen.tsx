@@ -1,56 +1,80 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
-import StatusBarSpace from "../../components/StatusBarSpace";
-import { MaterialIcons } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
+import colors from "../../data/colors";
 
-const ProdcutsInCart = (props) => {
-return(
-  <View style={styles.itemsContainer}>
+import {useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
+import CartItem from "../Cart/CartItem"
+import Total from "../Cart/Total"
 
-        <View style={styles.imageBox}>
-        </View>
 
-          <View style={styles.product}>
-            <Text style={styles.productName}>Polo Shirt</Text>
-            <Text style={styles.productPrice}>$20</Text>
-          </View>
 
-          <Text style={styles.removeItem}>-</Text>
+const CartScreen = () => {
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
-          <View style={styles.quantity}>
-          <Text>Qty</Text>
-          <Text style={{textAlign: "center"}}>1</Text>
-          </View>
-         
+  const navigation = useNavigation();
 
-          <Text style={styles.addItem}>+</Text>
-          
-          <MaterialIcons style={{alignSelf: "center"}}name="delete" size={24} color="#8C5674" />
-      </View>
-)
-}
-const CartScreen = (props) => {
   return (
-    <View style={{ flex: 1, backgroundColor: "#dcb688", alignItems: "flex-start" }}>
-      <StatusBarSpace />
-
+    <View
+      style={{ flex: 1, backgroundColor: "#dcb688", alignItems: "flex-start" }}
+    >
       <View style={styles.firstContainer}>
-       <Text style={styles.cartTitle}>Cart</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Feather
+            style={{ marginTop: 45, marginLeft: 10 }}
+            name="arrow-left"
+            size={24}
+            color={colors.violet}
+          />
+        </TouchableOpacity>
+        <Text style={styles.cartTitle}>Cart</Text>
 
-      <View style={styles.subtotalContainer}>
-        <Text style={styles.subtotal}>Subtotal:</Text>
-        <Text style={styles.subtotal}>$60</Text>
-      </View> 
+        <View style={styles.subtotalContainer}>
+          <Text style={styles.subtotal}>Subtotal:</Text>
+          <Total />
+        </View>
       </View>
-      
 
       <View style={styles.toCheckoutButton}>
-        <Text style={styles.toCheckoutText}>Proceed to Checkout</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CheckoutScreen" as never)}
+        >
+          <Text style={styles.toCheckoutText}>Proceed to Checkout</Text>
+        </TouchableOpacity>
       </View>
 
-      <ProdcutsInCart />
-      <ProdcutsInCart />
-      <ProdcutsInCart />
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.scroll}>
+          {cart?.map(
+            (item: {
+              price: number;
+              quantity: number;
+              id: number;
+              image: string;
+              title: string;
+            }) => (
+              <CartItem
+                key={item.id}
+                id={item.id}
+                image={item.image}
+                title={item.title}
+                price={item.price}
+                quantity={item.quantity}
+              />
+            )
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -58,31 +82,33 @@ const CartScreen = (props) => {
 export default CartScreen;
 
 const styles = StyleSheet.create({
-  firstContainer:{
+  firstContainer: {
     flexDirection: "row",
     marginBottom: 20,
+    justifyContent: "space-between",
+    marginTop:10,
   },
   cartTitle: {
     fontSize: 35,
-    marginTop: 30,
-    marginLeft: 15,
-
+    marginTop: 34,
+    marginLeft: 5,
+    marginRight: -20,
   },
   subtotalContainer: {
-    width: 270,
+    width: 260,
     height: 30,
     backgroundColor: "white",
     justifyContent: "space-between",
     borderRadius: 5,
     flexDirection: "row",
-    marginTop: 40,
+    marginTop: 42,
     marginLeft: 30,
+    alignItems: "center",
   },
   subtotal: {
     fontSize: 20,
     paddingLeft: 10,
-    paddingRight: 10,
-
+    marginRight: 90,
   },
   toCheckoutButton: {
     backgroundColor: "#8C5674",
@@ -91,58 +117,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: "center",
     marginBottom: 30,
+    justifyContent: "center"
   },
   toCheckoutText: {
     color: "white",
     fontSize: 13,
     textAlign: "center",
-    paddingTop: 3,
-   },
-  itemsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: 350,
-    height: 100,
-    backgroundColor: "white",
-    alignSelf: "center",
-    borderRadius: 10,
-    marginBottom:20,
   },
-  imageBox: {
-    width :80,
-    height: 100,
-    backgroundColor: "gray",
-    borderRadius: 10,
-    marginLeft: -20,
-
+  
+  scroll: {
+    marginLeft: 25,
   },
-  product: {
-      alignSelf: "center",
-      marginLeft: -20,
-
-  },
-  productName: {
-    alignSelf: "center",
-
-  },
-  productPrice: {
-    // alignSelf: "center",
-
-
-  },
-  quantity: {
-    alignSelf: "center",
-    marginLeft: -20,
-    marginRight: -20,
-
-
-
-  },
-  removeItem: {
-    alignSelf: "center",
-  },
-  addItem: {
-      alignSelf: "center",
-
-},
 });

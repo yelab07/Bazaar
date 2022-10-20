@@ -1,65 +1,101 @@
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
+import ReadMore from '@fawazahmed/react-native-read-more';
+
+import { addToCart } from "../../redux/cartSlice";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { useProductQuery } from "../../services/productsApi";
-import { RouteProp } from "@react-navigation/native"
-type ParamList = { Params: { id: string }; };
+import { RouteProp } from "@react-navigation/native";
+import QuantitySelector from "../../components/QuantitySelector";
+import { scale } from "react-native-size-matters";
+import { Product } from '../../models/products.model';
+import { useDispatch } from "react-redux";
+
+type ParamList = { Params: { id: string } };
 
 
 const ProductDetailsScreen = () => {
+  const dispatch = useDispatch()
+
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<ParamList, "Params">>()
-  const { id } = route.params
+  const route = useRoute<RouteProp<ParamList, "Params">>();
+  const { id } = route.params;
   const { data } = useProductQuery(id);
+  const [quantity, setQuantity] = useState<any>(1);
+
+  const onAddToCart = (product: Product, quantity: number) => {
+    dispatch(addToCart({ ...product, quantity }))
+  };
 
 
   return (
-
-
-    <View style={{ flex: 1, backgroundColor: "#dcb688" }}>
-
-
-      <Text>ProductDetailsScreen</Text>
-      <Text>{data?.title}</Text>
-
-      <Button
-        title="To Home"
-        onPress={() => navigation.navigate("HomeScreen" as never)}
-      />
-      <Button
-        title="To Products"
-        onPress={() => navigation.navigate("ProductsScreen" as never)}
-      />
-      <View style={{ alignItems: "center" }}>
-        < View style={styles.firstContainer}>
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={{ alignItems: "center", marginHorizontal: 0 }}>
+          <View>
+            <View>
+              <Text style={styles.title}>{data?.title}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: scale(20),
+                marginHorizontal: scale(20),
+              }}
+            >
+              <Text style={styles.category}>{data?.category}</Text>
+              <Text style={styles.rating}> Rating:{data?.rating.rate}</Text>
+            </View>
+          </View>
+          <View>
+            <Image
+              resizeMode="cover"
+              style={styles.productImg}
+              source={{ uri: `${data?.image}` }}
+            />
+          </View>
 
           <View
             style={{
-              flex: 1,
               flexDirection: "row",
-              justifyContent: "center",
+              justifyContent: "space-between",
+              flex: 1,
+              width: 250,
+              marginTop: 20,
             }}
           >
-
-
-
-            <View style={styles.view1}
-            >
-              <Image resizeMode="cover"
-                style={{
-                  width: '100%',
-                  height: undefined,
-                  aspectRatio: 1,
-                }}
-                source={{ uri: `${data?.image}` }}
-              />
+            <View>
+              <Text style={styles.price}> ${data?.price}</Text>
+              <Text
+                style={{ fontSize: 20, alignContent: "center", color: "green" }}
+              >
+                In stock
+              </Text>
             </View>
-
+            <View>
+              <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+            </View>
           </View>
-
-
         </View>
-      </View>
+        <View style={styles.root}>
+          <ReadMore numberOfLines={3} seeMoreStyle={{ color: "#8C5674", }} seeLessStyle={{ color: "#8C5674", }} style={styles.description}>{data?.description}</ReadMore>
+        </View>
+        <View style={styles.addToCartWrapper}>
+          <TouchableOpacity style={styles.addButton} onPress={() => onAddToCart(data as any, quantity)}>
+            <Text style={styles.addButtonText}>Add To Cart</Text>
+          </TouchableOpacity>
+        </View>
+        <View></View>
+      </ScrollView>
     </View>
   );
 };
@@ -67,58 +103,52 @@ const ProductDetailsScreen = () => {
 export default ProductDetailsScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 30,
+    backgroundColor: "#dcb688",
+  },
+  productImg: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+  },
   title: {
+    marginHorizontal: scale(20),
     fontSize: 25,
-    padding: 15,
+    fontWeight: "bold",
   },
-  firstContainer: {
-    flexDirection: "column",
-    width: 300,
-    height: 300,
-
+  category: {
+    fontSize: 20,
+    textTransform: "capitalize",
   },
-  view1: {
-    backgroundColor: "white",
-    width: 600,
-    height: 600,
-    borderRadius: 15,
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    marginTop: 40,
+  rating: {
+    fontSize: 15,
+    marginVertical: scale(5),
   },
-  secondViewContainer: {
-    alignItems: "center",
+  price: { fontSize: 20 },
+  addToCartWrapper: {},
+  description: {
+    marginVertical: scale(20),
+    lineHeight: scale(20),
+    marginHorizontal: scale(20),
   },
-  view2: {
-    width: 350,
-    height: 100,
-    backgroundColor: "white",
-    marginBottom: 20,
-    borderRadius: 15,
+  addButton: {
+    marginTop: scale(10),
+    height: scale(45),
     flexDirection: "row",
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-  imageBox: {
-    width: 120,
-    height: 100,
-    backgroundColor: "gray",
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  categoryBox: {
-    paddingLeft: 10,
-    width: 175,
-    height: 100,
     justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+    backgroundColor: "#8C5674",
+    marginHorizontal: 65,
   },
-
-
-
+  addButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+  },
+  root: {
+    flex: 1,
+    padding: 16,
+  },
 });
