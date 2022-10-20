@@ -1,26 +1,31 @@
 import { StyleSheet, TextInput, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import StatusBarSpace from "./StatusBarSpace";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useRoute, getFocusedRouteNameFromRoute } from "@react-navigation/core";
 import { Feather } from "@expo/vector-icons";
 import colors from "../data/colors";
 
 export default function SearchBar() {
+  const route = useRoute();
+  const routeName = getFocusedRouteNameFromRoute(route);
   const navigation = useNavigation();
   const [text, setText] = useState("");
   return (
     <View style={{ backgroundColor: "#dcb688" }}>
       <StatusBarSpace />
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Feather
-            style={{ marginTop: 15, marginLeft: 10 }}
-            name="arrow-left"
-            size={24}
-            color={colors.violet}
-          />
-        </TouchableOpacity>
 
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        {(routeName === "ProductsScreen" || routeName === "ProductDetailsScreen") &&
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Feather
+              style={{ marginTop: 15, marginLeft: 10 }}
+              name="arrow-left"
+              size={24}
+              color={colors.violet}
+            />
+
+          </TouchableOpacity>
+        }
         <TextInput
           value={text}
           onChangeText={setText}
