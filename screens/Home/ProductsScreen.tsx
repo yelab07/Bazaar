@@ -4,9 +4,6 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp } from "@react-navigation/native";
 import { useProductsQuery } from "../../services/productsApi";
-import { Feather } from "@expo/vector-icons";
-import colors from "../../data/colors";
-
 import { Product } from '../../models/products.model';
 
 type ParamList = { Params: { search: string } };

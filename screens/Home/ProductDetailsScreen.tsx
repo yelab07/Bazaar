@@ -20,11 +20,9 @@ import { Product } from '../../models/products.model';
 import { useDispatch } from "react-redux";
 
 type ParamList = { Params: { id: string } };
-type Props = {
-  onPress: () => void;
-};
 
-const ProductDetailsScreen = ({ onPress }: Props) => {
+
+const ProductDetailsScreen = () => {
   const dispatch = useDispatch()
 
   const navigation = useNavigation();
