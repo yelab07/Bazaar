@@ -21,7 +21,7 @@ const Category = ({ category, image, index }: CategoryProps) => {
         <ScrollView contentContainerStyle={styles.secondViewContainer}>
 
             <TouchableOpacity style={styles.categoriesView} key={index}
-                onPress={() => {navigation.navigate("ProductsScreen" as never, {search: category} as never)}}
+                onPress={() => { navigation.navigate("ProductsScreen" as never, { search: category } as never) }}
             >
                 <View style={styles.imageBox}>
                     <Image resizeMode="cover"
@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
     },
     imageBox: {
-        width: 120,
+        width: 140,
         height: 100,
-        backgroundColor: "gray",
+        backgroundColor: "white",
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
     },
