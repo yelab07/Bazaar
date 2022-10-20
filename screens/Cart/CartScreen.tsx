@@ -100,7 +100,7 @@ const Total = () => {
 };
 
 const CartScreen = () => {
-  const cart = useSelector((state: { cart: any }) => state.cart.cart.cart);
+  const cart = useSelector((state: { cart: any }) => state.cart.cart);
 
   const navigation = useNavigation();
 
